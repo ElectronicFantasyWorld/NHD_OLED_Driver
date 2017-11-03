@@ -4,11 +4,11 @@
     "keywords": "character,LCD,OLED,display",
     "repository": {
         "type": "git",
-        "url": "https://github.com/"
+        "url": "https://github.com/ElectronicFantasyWorld/NHD_OLED_Driver"
     },
     "version": "1.0.0",
     "license": "MIT",
-    "homepage": "http://www.e-f-w.com/",
+    "homepage": "https://github.com/ElectronicFantasyWorld/NHD_OLED_Driver",
     "frameworks": "arduino",
     "platforms": "atmelavr",
     "examples": [
