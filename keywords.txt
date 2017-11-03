@@ -1,0 +1,20 @@
+NHD_OLED    KEYWORD1
+
+begin   KEYWORD2
+sendCommand KEYWORD2
+sendData    KEYWORD2
+setupDisplaySize    KEYWORD2
+setupPins   KEYWORD2
+setupInit   KEYWORD2
+displayControl  KEYWORD2
+displayOn   KEYWORD2
+displayOff  KEYWORD2
+textClear   KEYWORD2
+cursorHome  KEYWORD2
+cursorMoveToRow KEYWORD2
+textClearRow    KEYWORD2
+shift   KEYWORD2
+cursorPos   KEYWORD2
+print   KEYWORD2
+textSweep   KEYWORD2
+SPIBitBang  KEYWORD2
