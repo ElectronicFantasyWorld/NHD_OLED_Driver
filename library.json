@@ -1,0 +1,17 @@
+{
+    "name": "Newhaven Slim OLED Driver",
+    "description": "Library for Newhaven Slim OLED displays, using bit-banged SPI communication. Only three pins are required, and they don't have to be hardware SPI. Driver also includes helper functions for easier implementation.",
+    "keywords": "character,LCD,OLED,display",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/"
+    },
+    "version": "1.0.0",
+    "license": "MIT",
+    "homepage": "http://www.e-f-w.com/",
+    "frameworks": "arduino",
+    "platforms": "atmelavr",
+    "examples": [
+        "demo/*.ino"
+    ]
+}
