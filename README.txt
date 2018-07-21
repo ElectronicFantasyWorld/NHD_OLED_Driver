@@ -316,6 +316,10 @@ The rest of this mess of code came from some guy named Tom Honaker.
 What's the version history?
 =========================-=--=---=----=-----=------=-------=--------=---------=
 
+1.1: Eliminated the need for a chip-select line, which in turn decreases the
+pin count requirement on the Arduino to two. (Tie the CS pin on the display
+to ground.)
+
 1.0: Initial release
 
 
