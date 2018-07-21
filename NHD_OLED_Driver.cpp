@@ -79,6 +79,8 @@
 //
 // Performs all required initialization steps in a single command.
 //
+// 1.1 UPDATE: C_S pin requirement removed - tie the display's /CS to ground.
+//
 // Parameters:
 //    pinSCLK: pin to use for SPI clock - connect to display's SCLK pin.
 //    pinSDIN: pin to use for SPI MOSI - connect to display's SDI pin.
@@ -86,13 +88,16 @@
 //    rows: number of rows/lines on the display.
 //    columns: number of columns/characters per line on the display.
 //
-void NHD_OLED::begin(byte pinSCLK, byte pinSDIN, byte pinC_S, byte rows = 2, 
+//void NHD_OLED::begin(byte pinSCLK, byte pinSDIN, byte pinC_S, byte rows = 2, 
+//                     byte columns = 16) {
+//    setupPins(pinSCLK, pinSDIN, pinC_S);
+void NHD_OLED::begin(byte pinSCLK, byte pinSDIN, byte rows = 2, 
                      byte columns = 16) {
-    setupPins(pinSCLK, pinSDIN, pinC_S);
+    setupPins(pinSCLK, pinSDIN);
     setupDisplaySize(rows, columns);
     setupInit();
 }
-       
+
 // NHD_OLED::SPIBitBang
 //
 // This function performs a simple send-only SPI connection using any three 
@@ -106,7 +111,7 @@ void NHD_OLED::begin(byte pinSCLK, byte pinSDIN, byte pinC_S, byte rows = 2,
 //   isCommand: command/data flag, where 0 = data and <>0 = command
 //
 void NHD_OLED::SPIBitBang(byte data, byte isCommand) {
-  byte i, cb; 
+  byte i, cb;
 
   // If var "isCommand" is zero, we're sending a data byte.
   // If it's NON-zero, we're sending a command byte.
@@ -116,7 +121,10 @@ void NHD_OLED::SPIBitBang(byte data, byte isCommand) {
     cb = 0xF8; // Var "data" is a command/control byte.
 
   // Pull the chip-select line low.
-  digitalWrite(C_S, LOW);
+  //
+  // 1.1 UPDATE: C_S pin requirement removed - tie the display's /CS to ground.
+  //
+  //digitalWrite(C_S, LOW);
 
   // Send the command-or-data type specifier...
   for(i=0;i<8;i++)
@@ -131,7 +139,7 @@ void NHD_OLED::SPIBitBang(byte data, byte isCommand) {
   for(i=0;i<4;i++)
   {
     digitalWrite(SCLK, LOW);
-    digitalWrite(SDIN, (data & 0x01));    
+    digitalWrite(SDIN, (data & 0x01));
     data = data >> 1;
     digitalWrite(SCLK, HIGH);
   }
@@ -148,7 +156,7 @@ void NHD_OLED::SPIBitBang(byte data, byte isCommand) {
   for(i=0;i<4;i++)
   {
     digitalWrite(SCLK, LOW);
-    digitalWrite(SDIN, (data & 0x01)); 
+    digitalWrite(SDIN, (data & 0x01));
     data = data >> 1;
     digitalWrite(SCLK, HIGH);
   }
@@ -159,7 +167,7 @@ void NHD_OLED::SPIBitBang(byte data, byte isCommand) {
     digitalWrite(SCLK, LOW);
     digitalWrite(SDIN, LOW);
     digitalWrite(SCLK, HIGH);
-  }  
+  }
 }
 
 
@@ -209,23 +217,26 @@ void NHD_OLED::setupDisplaySize(byte rows = 2, byte columns = 16) {
 // hardware SPI - any three available pins should work as long as they're not
 // doing something else.
 //
+// 1.1 UPDATE: C_S pin requirement removed - tie the display's /CS to ground.
+//
 // Parameters:
 //    pinSCLK: pin to use for SPI clock - connect to display's SCLK pin.
 //    pinSDIN: pin to use for SPI MOSI - connect to display's SDI pin.
 //    pinC_S: pin to use for SPI chip select - connect to display's /CS pin.
 //
-void NHD_OLED::setupPins(byte pinSCLK, byte pinSDIN, byte pinC_S) {
+//void NHD_OLED::setupPins(byte pinSCLK, byte pinSDIN, byte pinC_S) {
+void NHD_OLED::setupPins(byte pinSCLK, byte pinSDIN) {
   SCLK = pinSCLK;
   SDIN = pinSDIN;
-  C_S = pinC_S;
-    
+  //C_S = pinC_S;
+
   pinMode(SCLK, OUTPUT);
   pinMode(SDIN, OUTPUT);
-  pinMode(C_S,  OUTPUT);
-  
+  //pinMode(C_S,  OUTPUT);
+
   digitalWrite(SCLK, HIGH);
   digitalWrite(SDIN, HIGH);
-  
+
   delay(30);
 }
 
@@ -293,13 +304,13 @@ void NHD_OLED::setupInit() {
     sendCommand(0x40);     // VCOMH deselect level - value
     sendCommand(0x78);     // Function set select > OLED command set disable (SD = 0)
 
-    
+
     // Wrapping up and switching on
     sendCommand(0x28);     // Function set select > fundamental (default) command set (RE = 0)
     sendCommand(0x01);     // Clear display
     sendCommand(0x80);     // Set DDRAM address to 0x00 (home on topmost row/line)
     sendCommand(0x0C);     // Display ON
-    
+
     delay(100);
 }
 
@@ -555,7 +566,7 @@ void NHD_OLED::textPrintCentered(char *text, byte length, byte row) {
 
   // Move the cursor to the row/line.
   cursorMoveToRow(row);
-  
+
   // Print the centered text.
   print(line, DISP_COLUMNS);
 }

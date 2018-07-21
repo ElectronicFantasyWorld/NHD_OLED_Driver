@@ -1,5 +1,5 @@
 
-Newhaven Display Slim OLED Driver
+Newhaven Display Slim OLED Driver - Version 1.1
 ===============================================================================
 
 
@@ -9,9 +9,12 @@ What is this?
 
 This is a comprehensive driver for running Newhaven's slim OLED character 
 displays from just about any Arduino with enough free pins to connect to one. 
-The interface being used is SPI, but it's bit-banged on four Arduino pins so
+The interface being used is SPI, but it's bit-banged on two Arduino pins so
 there's no requirement for the Arduino to have hardware SPI support. Check the
 datasheet for your display to wire it to the Arduino in SPI mode.
+
+Note that as of the 1.1 version, a chip-select pin is no longer required.
+Simply tie the CS line on the display to ground.
 
 In order to save on precious memory, the library uses very little global RAM.
 Variables are mainly declared inside functions so memory use is far more local
@@ -32,10 +35,10 @@ This driver is designed to use bit-banged SPI to drive the display, which has
 two benefits:
 
 1. Since it's a bit-bang drive, your Arduino doesn't have to have hardware
-   SPI. All you need are three available pins. This means that this driver
+   SPI. All you need are two available pins. This means that this driver
    should work with practically any Arduino and Arduino derivative, e.g. 
    Adafruit's Trinkets.
-2. Since we're only using three pins, this code can work with projects that
+2. Since we're only using two pins, this code can work with projects that
    make heavier use of the rest of the Arduino.
 
 Connecting the display is actually pretty straightforward:
@@ -94,11 +97,11 @@ and assuming the pin and size information is correct, using the display should
 be a simple case of calling the begin() procedure from setup():
 
   // Initialize the driver and display in a single line of code.
-  oled.begin(1,2,3,2,16);
+  oled.begin(1,2,2,16);
   
 The above sets up the driver to work with a 2-row/16-character display whose
-SCLK pin is connected to pin 1 on the Arduino, SDI pin is connected to Arduino
-pin 2, and /CS pin is connected to Arduino pin 3.
+SCLK pin is connected to pin 1 on the Arduino, and SDI pin is connected to
+Arduino pin 2.
 
 
 If you prefer separating the statrtup calls, you can accomplish the same as
@@ -109,8 +112,8 @@ above by calling these three startup functions from setup():
   oled.setupDisplay(2,16)
 
   // Set up the pins the display uses. These will be the Arduino pins
-  // connected to the SCLK, SDIN, and /CS pins on the display, respectively.
-  oled.setupPins(1,2,3);
+  // connected to the SCLK and SDIN pins on the display, respectively.
+  oled.setupPins(1,2);
   
   // Initialize the display.
   oled.setupInit();
@@ -166,9 +169,8 @@ basic animations, and using string tables stored in program memory.
 IMPORTANT NOTE ON STRINGS/CHARS
 
 C/C++ strings end in nulls (0x00), but to a LCD or OLED display, character 
-code 0x00 is the first of eight custom character pattern slots in the display's 
-character generator ROM. When sending text to the display, remember to NOT send 
-a 0x00 unless displaying custom character #1 is the desired result!
+code 0x00 is an actual character. When sending text to the display, remember
+to NOT send a 0x00 unless displaying character 0 is the desired result!
 
 
 
@@ -177,8 +179,7 @@ Functions you might want to use
 
 Functions included within the driver are:
 
-begin(byte pinSCLK, byte pinSDIN, byte pinC_S, byte rows = 2, 
-       byte columns = 16)
+begin(byte pinSCLK, byte pinSDIN, byte rows = 2, byte columns = 16)
   Configures the driver and initialize the display, all in one command. This
   procedure calls the setupDisplaySize, setupPins, and setupInit procedures
   in sequence. Call this before using the display.
@@ -201,8 +202,8 @@ setupDisplaySize(byte rows = 2, byte columns = 16);
   Configures the driver to understand the size of the display, in rows and 
   columns. Call either this or begin() before using the display.
   
-setupPins(byte pinSCLK, byte pinSDIN, pinbyte C_S);
-  Configures the driver to know which three pins to use to communicate with
+setupPins(byte pinSCLK, byte pinSDIN);
+  Configures the driver to know which two pins to use to communicate with
   the display. Call either this or begin () before using the display.
   
 setupInit();
@@ -309,6 +310,13 @@ Newhaven Display International, Inc. This is the magic bit that lots of other
 OLED drivers seem to get wrong.
 
 The rest of this mess of code came from some guy named Tom Honaker.
+
+
+
+What's the version history?
+=========================-=--=---=----=-----=------=-------=--------=---------=
+
+1.0: Initial release
 
 
 

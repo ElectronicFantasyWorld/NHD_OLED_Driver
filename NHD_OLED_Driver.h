@@ -79,12 +79,15 @@ class NHD_OLED
 {
   public:
     // Here's the good stuff...
-    void begin(byte pinSCLK, byte pinSDIN, byte pinC_S, byte rows = 2, 
+    //void begin(byte pinSCLK, byte pinSDIN, byte pinC_S, byte rows = 2, 
+    //           byte columns = 16);
+    void begin(byte pinSCLK, byte pinSDIN, byte rows = 2, 
                byte columns = 16);
     void sendCommand(byte command);
     void sendData(byte data);
     void setupDisplaySize(byte rows = 2, byte columns = 16);
-    void setupPins(byte pinSCLK, byte pinSDIN, byte pinC_S);
+    //void setupPins(byte pinSCLK, byte pinSDIN, byte pinC_S);
+    void setupPins(byte pinSCLK, byte pinSDIN);
     void setupInit();
     void displayControl(byte display, byte cursor, byte block);
     void displayOn();
@@ -124,11 +127,11 @@ class NHD_OLED
     void leftToRight();
     void rightToLeft();
     void createChar(byte num, char* data);
-    
+
     // Pin Designations
     byte SCLK = 0;
     byte SDIN = 1;
-    byte C_S =  2;
+    //byte C_S =  2;
 
     // Display Geometry
     byte DISP_ROWS = 2;

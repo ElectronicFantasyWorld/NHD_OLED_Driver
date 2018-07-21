@@ -6,7 +6,7 @@
         "type": "git",
         "url": "https://github.com/ElectronicFantasyWorld/NHD_OLED_Driver"
     },
-    "version": "1.0.0",
+    "version": "1.1.0",
     "license": "MIT",
     "homepage": "https://github.com/ElectronicFantasyWorld/NHD_OLED_Driver",
     "frameworks": "arduino",
